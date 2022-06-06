@@ -23,6 +23,9 @@ function App() {
         })();
     }, []);
 
+    function handle () {
+
+    }
 
     // Monitor latestRates for changes.
     useEffect(() => {
