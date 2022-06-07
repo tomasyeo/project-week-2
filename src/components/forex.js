@@ -1,8 +1,4 @@
-// https://openexchangerates.org/api/latest.json?app_id=93f5f5f294904d13b8a78a70b10857ef
-
-//mZNw7dFspw_L0Dtws7KGywEJuZexUfBm
 import Dinero from "dinero.js";
-//import React, { useEffect, useState } from "react";
 import { currencies as mock_currencies, rates as mock_rates } from "../data"
 
 const axios = require('axios');
