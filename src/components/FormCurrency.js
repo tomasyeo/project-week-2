@@ -14,20 +14,16 @@ const FormCurrency = ({ currencies, exchange, result, func }) => {
                 if (value === exchange.to) {
                     // swapping currency.
                     func(exchange.to, exchange.from, exchange.amount);
-                    //setBase([baseCurrency[1], baseCurrency[0], baseCurrency[2]]);
                 } else {
                     func(value, exchange.to, exchange.amount);
-                    //setBase([value, baseCurrency[1], baseCurrency[2]]);
                 }
                 break;
             case 'selTarget':
                 if (value === exchange.from) {
                     // swapping currency.
                     func(exchange.to, value, exchange.amount);
-                    //setBase([baseCurrency[1], baseCurrency[0], baseCurrency[2]]);
                 } else {
                     func(exchange.from, value, exchange.amount);
-                    //setBase([baseCurrency[0], value, baseCurrency[2]]);
                 }
                 break;
             default:
@@ -42,8 +38,6 @@ const FormCurrency = ({ currencies, exchange, result, func }) => {
         console.log(exchange);
     }
 
-    //value={baseCurrency[0]}
-    //value={targetCurrency[0]}
     return (
         <>
             <form id="frmCurrency" className="row g-2 m-2">
@@ -70,7 +64,6 @@ const FormCurrency = ({ currencies, exchange, result, func }) => {
                     </div>
                 </div>
             </div>
-
         </>
     );
 }
