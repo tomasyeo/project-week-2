@@ -8,11 +8,11 @@ const OptionItems = ({items}) => {
     }
 };
 
-const SelectCurrency = ({ data, id, selected, selectOnChange }) => {
+const SelectCurrency = ({ currencies, id, selected, selectOnChange }) => {
 
     return (
         <select id={id} className="form-select" aria-label="Default select example" value={selected} onChange={(e) => selectOnChange(e.target.id, e.target.value) }>
-            <OptionItems items={data} />
+            <OptionItems items={currencies} />
         </select>
     );
 }
