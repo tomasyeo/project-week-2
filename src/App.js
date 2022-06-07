@@ -20,7 +20,8 @@ function App() {
             setExchange({ from: 'USD', to: 'SGD', amount: 1 });
             setResult(await Forex.convert('USD', 'SGD', 1));
             //setLatestRates(await Forex.getLatestRates({ from: 'USD' }, true));
-         })();
+            //console.log('App (useEffect[])');
+        })();
     }, []);
 
     function handleUpdate(base, target, amount) {
