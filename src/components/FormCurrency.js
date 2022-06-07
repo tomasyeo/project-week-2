@@ -1,101 +1,77 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SelectCurrency from './SelectCurrency';
 
-const FormCurrency = ({ data, exchange }) => {
-    
-    const [baseCurrency, setBase] = useState([]);
-    const [targetCurrency, setTarget] = useState([]);
-
-
-    useEffect(() => {
-        (async() => {
-            //let d = await dinero({ amount: 100}).convert('SGD');
-        //setBase([exchange.amount, exchange.base]);
-        //setTarget([exchange.rates, exchange.target]);
-            const ex = await exchange('USD', 'SGD', 1);
-            setBase([ex.amount, ex.base]);
-        setTarget([ex.rates, ex.target]);
-
-        })();
-        //console.log(exchange);
-        // Init
-        
-
-
-        //console.log('FormCurrency (useEffect[])', dinero);
-    }, []);
-
-
-    useEffect(() => {
-        //console.log('baseCurrency', baseCurrency);
-        //console.log('FormCurrency (useEffect[baseCurrency])', dinero.getAmount(), dinero.getCurrency());
-    }, [baseCurrency]);
-
-
-    useEffect(() => {
-        //console.log('targetCurrency', targetCurrency);
-
-    }, [targetCurrency]);
-
+const FormCurrency = ({ currencies, exchange, result, func }) => {
 
     function filterInt(value) {
         return (/^[-+]?(\d+|Infinity)$/.test(value)) ? Number(value) : 0;
     }
 
-
     function selectOnChange(id, value) {
         console.log(id, value);
-        switch(id) {
+        switch (id) {
             case 'selBase':
-                if (value === targetCurrency[1]) {
+                if (value === exchange.to) {
                     // swapping currency.
-                    setBase([baseCurrency[0], targetCurrency[1]]);
-                    setTarget([targetCurrency[0], baseCurrency[1]]);
+                    func(exchange.to, exchange.from, exchange.amount);
+                    //setBase([baseCurrency[1], baseCurrency[0], baseCurrency[2]]);
                 } else {
-                    setBase([baseCurrency[0], value]);
+                    func(value, exchange.to, exchange.amount);
+                    //setBase([value, baseCurrency[1], baseCurrency[2]]);
                 }
                 break;
             case 'selTarget':
-                if (value === baseCurrency[1]) {
+                if (value === exchange.from) {
                     // swapping currency.
-                    setTarget([targetCurrency[0], baseCurrency[1]]);
-                    setBase([baseCurrency[0], targetCurrency[1]]);
+                    func(exchange.to, value, exchange.amount);
+                    //setBase([baseCurrency[1], baseCurrency[0], baseCurrency[2]]);
                 } else {
-                    setTarget([targetCurrency[0], value]);
+                    func(exchange.from, value, exchange.amount);
+                    //setBase([baseCurrency[0], value, baseCurrency[2]]);
                 }
                 break;
             default:
                 break;
         }
+        console.log(exchange);
     }
 
     function txtOnKeyUp(id, value) {
-        console.log(id, value);
-        switch(id) {
-            case 'txtBase':
-                setBase([value, baseCurrency[1]]);
-                break;
-            case 'txtTarget':
-                setTarget([value, targetCurrency[1]]);
-                break;
-            default:
-                break;                
-        }
+        //handler here.
+        func(exchange.from, exchange.to, filterInt(value));
+        console.log(exchange);
     }
+
     //value={baseCurrency[0]}
     //value={targetCurrency[0]}
     return (
-        <form id="frmCurrency" className="row g-3 m-3">
-            <div className="col-sm-4"><input id="txtBase" type="number" className="form-control" placeholder="$$$" aria-label="$$$" 
-                 value={baseCurrency[0]} onChange={(e) => txtOnKeyUp(e.target.id, e.target.value, e)} /></div>
-            <div className="col-sm-8"><SelectCurrency id={'selBase'} data={data} selected={baseCurrency[1]} selectOnChange={selectOnChange} /></div>
+        <>
+            <form id="frmCurrency" className="row g-2 m-2">
+                <div className="col-sm-4">
+                    <label htmlFor="txtAmount" className="form-label">Amount</label>
+                    <input id="txtAmount" type="number" className="form-control" placeholder="$$$" aria-label="$$$"
+                        value={exchange.amount} onChange={(e) => txtOnKeyUp(e.target.id, e.target.value, e)} /></div>
+                <div className="col-sm-4">
+                    <label htmlFor="selBase" className="form-label">Base Currency</label>
+                    <SelectCurrency id={'selBase'} currencies={currencies} selected={exchange.from} selectOnChange={selectOnChange} />
+                </div>
+                <div className="col-sm-4">
+                    <label htmlFor="selTarget" className="form-label">Target Currency</label>
+                    <SelectCurrency id={'selTarget'} currencies={currencies} selected={exchange.to} selectOnChange={selectOnChange} />
+                </div>
+            </form>
+            <div className="row g-2 m-3">
+                <div className="card bg-secondary">
+                    <div className="card-body">
+                        <p className="card-text">{result.amount} {result.base} is equivalent to {result.rates} {result.target}.</p>
+                    </div>
+                    <div className="card-footer small">
+                        Conversions are based on exchange rates published on {result.date}.
+                    </div>
+                </div>
+            </div>
 
-            <div className="col-sm-4"><input id="txtTarget" type="number" className="form-control" placeholder="$$$" aria-label="$$$" 
-                 value={targetCurrency[0]} onChange={(e) => txtOnKeyUp(e.target.id, e.target.value)} /></div>
-            <div className="col-sm-8"><SelectCurrency id={'selTarget'} data={data} selected={targetCurrency[1]} selectOnChange={selectOnChange} /></div>
-            <span>{JSON.stringify(exchange)}</span>
-        </form>
-        
+        </>
     );
 }
 

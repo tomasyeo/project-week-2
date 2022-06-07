@@ -43,7 +43,7 @@ async function convertDinero(baseCurrency, targetCurrency, amount) {
 async function convert(baseCurrency, targetCurrency, amount) {
     let data = await getLatestRates({from:baseCurrency, to:targetCurrency, amount:amount});
     //console.log(data.rates[targetCurrency]);
-    return {base: data.base, amount: data.amount, rates:data.rates[targetCurrency], target:targetCurrency};
+    return {base: data.base, amount: data.amount, target:targetCurrency, rates:data.rates[targetCurrency], date:data.date};
 }
 
 function getSupportedCurrencies(mock = false) {
