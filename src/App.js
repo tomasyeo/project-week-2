@@ -8,7 +8,7 @@ import FormCurrency from './components/FormCurrency';
 
 function App() {
     const [currencies, setCurrencies] = useState([]);
-    const [latestRates, setLatestRates] = useState([]);
+    //const [latestRates, setLatestRates] = useState([]);
     const [exchange, setExchange] = useState({ from: 'USD', to: 'SGD', amount: 1 });
     const [result, setResult] = useState({ base: 'USD', amount: 0, rates: 0, target: 'SGD' });
 
@@ -19,10 +19,7 @@ function App() {
             setCurrencies(await Forex.getSupportedCurrencies(true));
             setExchange({ from: 'USD', to: 'SGD', amount: 1 });
             setResult(await Forex.convert('USD', 'SGD', 1));
-            setLatestRates(await Forex.getLatestRates({ from: 'USD' }, true));
-            //setExchange(await Forex.convert(exchange.from, exchange.to, exchange.amount));
-            //setExchange(Forex.convert);
-            //console.log("App (useEffect[]", objDinero.getAmount(), objDinero.getCurrency());
+            //setLatestRates(await Forex.getLatestRates({ from: 'USD' }, true));
             //console.log('App (useEffect[])');
         })();
     }, []);
@@ -41,7 +38,6 @@ function App() {
                 <div>
                     <h3 className="float-md-start mb-0">Curreny Converter</h3>
                 </div>
-
             </header>
 
             <main className="px-3">
@@ -55,14 +51,10 @@ function App() {
             <footer className="mt-auto text-white-50">
                 <p>This app uses the <a className="text-white" href='https://www.frankfurter.app/' target='_blank' rel="noreferrer">Frankfurter API</a>. It tracks foreign exchange references rates published by the <a className="text-white" href='https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html' target='_blank' rel="noreferrer">European Central Bank</a>. The data refreshes around 16:00 CET every working day. </p>
             </footer>
-
-
         </>
     )
 
 }
-/* <div>{JSON.stringify(currencies)}</div>
-<div>{JSON.stringify(latestRates)}</div> */
 
 export default App;
 
