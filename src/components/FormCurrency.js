@@ -1,41 +1,40 @@
 import React from "react";
 import SelectCurrency from './SelectCurrency';
 
-const FormCurrency = ({ currencies, exchange, result, func }) => {
+const FormCurrency = ({ currencies, exchange, func }) => {
 
     function filterInt(value) {
         return (/^[-+]?(\d+|Infinity)$/.test(value)) ? Number(value) : 0;
     }
 
     function selectOnChange(id, value) {
-        console.log(id, value);
+        //console.log(id, value);
         switch (id) {
             case 'selBase':
                 if (value === exchange.to) {
-                    // swapping currency.
-                    func(exchange.to, exchange.from, exchange.amount);
+                    // swapping currency. 
+                    func({ from: exchange.to, to: exchange.from, amount: exchange.amount });
                 } else {
-                    func(value, exchange.to, exchange.amount);
+                    func({ from: value, to: exchange.to, amount: exchange.amount });
                 }
                 break;
             case 'selTarget':
                 if (value === exchange.from) {
                     // swapping currency.
-                    func(exchange.to, value, exchange.amount);
+                    func({ from: exchange.to, to: value, amount: exchange.amount });
                 } else {
-                    func(exchange.from, value, exchange.amount);
+                    func({ from: exchange.from, to: value, amount: exchange.amount });
                 }
                 break;
             default:
                 break;
         }
-        console.log(exchange);
     }
 
     function txtOnKeyUp(id, value) {
         //handler here.
-        func(exchange.from, exchange.to, filterInt(value));
-        console.log(exchange);
+        func({ from: exchange.from, to: exchange.to, amount: filterInt(value) });
+        //console.log(exchange);
     }
 
     return (
@@ -57,10 +56,10 @@ const FormCurrency = ({ currencies, exchange, result, func }) => {
             <div className="row g-2 m-3">
                 <div className="card bg-secondary">
                     <div className="card-body">
-                        <p className="card-text">{result.amount} {result.base} is equivalent to {result.rates} {result.target}.</p>
+                        <p className="card-text">{exchange.amount} {exchange.from} is equivalent to {exchange.rates} {exchange.to}.</p>
                     </div>
                     <div className="card-footer small">
-                        Conversions are based on exchange rates published on {result.date}.
+                        Conversions are based on exchange rates published on {exchange.date}.
                     </div>
                 </div>
             </div>

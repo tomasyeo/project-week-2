@@ -7,7 +7,6 @@ const axFrankfurter = axios.create({
     baseURL: 'https://api.frankfurter.app'
 });
 
-
 async function getData(query = "") {
     try {
         const { status, data } = await axFrankfurter.get(query);
@@ -36,10 +35,10 @@ async function convertDinero(baseCurrency, targetCurrency, amount) {
     return {currency: d.getCurrency(), amount: d.getAmount()};
 }
 
-async function convert(baseCurrency, targetCurrency, amount) {
-    let data = await getLatestRates({from:baseCurrency, to:targetCurrency, amount:amount});
-    //console.log(data.rates[targetCurrency]);
-    return {base: data.base, amount: data.amount, target:targetCurrency, rates:data.rates[targetCurrency], date:data.date};
+async function convert({from, to, amount}) {
+    let data = await getLatestRates({from, to, amount});
+    //console.log(data.rates[to]);
+    return {from: data.base, to:to, amount: data.amount, rates:data.rates[to], date:data.date};
 }
 
 function getSupportedCurrencies(mock = false) {
@@ -49,6 +48,7 @@ function getSupportedCurrencies(mock = false) {
 
 //from:"USD", to:"SGD", amount:100
 function getLatestRates(params = { from: 'USD' }, mock = false) {
+    // Build query string.
     let query = '/latest?';
     for (const i in params) {
         query += `${i}=${params[i]}&`;
@@ -57,15 +57,4 @@ function getLatestRates(params = { from: 'USD' }, mock = false) {
     return mock ? new Promise(resolve => resolve(mock_rates)) : getData(query);
 }
 
-/* async function convert2(amt, baseCur, targetCur) {
-    if (baseCur !== latestRates.base && baseCur !== targetCur) {
-        setLatestRates(await Forex.getLatestRates(baseCur, true));
-    }
-
-    let d = await Dinero({ amount: amt }).convert(targetCur, { endpoint: new Promise(resolve => resolve(latestRates)) });
-    return { 'baseCurrency': baseCur, 'targetAmount': d.getAmount(), 'targetCurrency': targetCur };
-}
- */
-
 export { getSupportedCurrencies, getLatestRates, convert };
-

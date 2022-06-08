@@ -7,27 +7,25 @@ import * as Forex from "./components/forex";
 import FormCurrency from './components/FormCurrency';
 
 function App() {
+    const defaultValue = { from: 'USD', to: 'SGD', amount: 1 };
+
     const [currencies, setCurrencies] = useState([]);
     //const [latestRates, setLatestRates] = useState([]);
-    const [exchange, setExchange] = useState({ from: 'USD', to: 'SGD', amount: 1 });
-    const [result, setResult] = useState({ base: 'USD', amount: 0, rates: 0, target: 'SGD' });
-
+    const [exchange, setExchange] = useState(defaultValue);
 
     // Calls only 1 time at init.
     useEffect(() => {
         (async () => {
             setCurrencies(await Forex.getSupportedCurrencies(true));
-            setExchange({ from: 'USD', to: 'SGD', amount: 1 });
-            setResult(await Forex.convert('USD', 'SGD', 1));
+            setExchange(await Forex.convert(defaultValue));
             //setLatestRates(await Forex.getLatestRates({ from: 'USD' }, true));
             //console.log('App (useEffect[])');
         })();
     }, []);
 
-    function handleUpdate(base, target, amount) {
-        setExchange({ from: base, to: target, amount: amount });
+    function handleUpdate({from, to, amount}) {
         (async () => {
-            setResult(await Forex.convert(base, target, amount));
+            setExchange(await Forex.convert({from, to, amount}));
         })();
         //console.log(exchange);
     }
@@ -41,11 +39,8 @@ function App() {
             </header>
 
             <main className="px-3">
-                <p className="lead">Proin dignissim, iaculis imperdiet proin tellus duis per porttitor. Magnis ridiculus maecenas mus euismod gravida iaculis dolor odio habitant. Urna primis habitasse enim ad risus ipsum dictumst phasellus. Sem augue turpis ante, vel libero cras litora vulputate. Conubia fames, ultrices commodo sit blandit proin. Tempor a euismod torquent justo, habitant lacinia et. Consequat vehicula pretium orci blandit lacinia morbi enim facilisis vulputate urna imperdiet. Malesuada ullamcorper rutrum sociis ultricies placerat, aliquet enim.</p>
                 {/* <h1>Curreny Converter</h1> */}
-                <FormCurrency currencies={currencies} exchange={exchange} result={result} func={handleUpdate} />
-
-                <p className="lead">Justo fusce dictum vestibulum nibh nisi mollis pretium etiam venenatis est sollicitudin. Phasellus mus ultricies dapibus? Pretium tempus, nam dictum hendrerit pharetra consectetur imperdiet congue? Tempus magna auctor tincidunt. Imperdiet hac nisi convallis condimentum mattis porta varius consectetur penatibus. Sociosqu proin eget nam laoreet porta, tristique venenatis suspendisse orci. Proin imperdiet maecenas vivamus a metus himenaeos facilisi velit ante consequat. Quis habitant velit est platea auctor eleifend consectetur consectetur nullam pellentesque lacinia. Ad mus rutrum nunc vivamus turpis malesuada consectetur pellentesque habitant rhoncus fringilla. Lacus condimentum adipiscing luctus urna? Lacinia nibh placerat nec congue sem pharetra accumsan dapibus lacinia nostra nunc urna? Consectetur fringilla ultrices sem non auctor tempus dignissim sodales vehicula sem nullam? Venenatis nascetur.</p>
+                <FormCurrency currencies={currencies} exchange={exchange} func={handleUpdate} />
             </main>
 
             <footer className="mt-auto text-white-50">
@@ -53,9 +48,6 @@ function App() {
             </footer>
         </>
     )
-
 }
 
 export default App;
-
-
