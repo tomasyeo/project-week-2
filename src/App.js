@@ -23,9 +23,9 @@ function App() {
         })();
     }, []);
 
-    function handleUpdate({from, to, amount}) {
+    function handleUpdate({ from, to, amount }) {
         (async () => {
-            setExchange(await Forex.convert({from, to, amount}));
+            setExchange(await Forex.convert({ from, to, amount }));
         })();
         //console.log(exchange);
     }
@@ -44,6 +44,7 @@ function App() {
             </main>
 
             <footer className="mt-auto text-white-50">
+                
                 <p>This app uses the <a className="text-white" href='https://www.frankfurter.app/' target='_blank' rel="noreferrer">Frankfurter API</a>. It tracks foreign exchange references rates published by the <a className="text-white" href='https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html' target='_blank' rel="noreferrer">European Central Bank</a>. The data refreshes around 16:00 CET every working day. </p>
             </footer>
         </>
